@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,7 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { addExpense } from "@/lib/supabaseExpenses";
 
 const CATEGORY_OPTIONS = [
   "Food", "Travel", "Shopping", "Bills", "Entertainment", "Health", "Other"
@@ -26,27 +26,30 @@ export default function ExpenseForm({ onAdd }: Props) {
   const [note, setNote] = useState("");
   const [date, setDate] = useState<Date>(new Date());
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const amt = parseFloat(amount);
     if (isNaN(amt) || amt <= 0) {
       toast({ title: "Please enter a valid amount", variant: "destructive" });
       return;
     }
-    const expense: Expense = {
-      id: uuidv4(),
+    const newExpense = {
       amount: amt,
       category,
       note,
       date: date.toISOString(),
     };
-    saveExpense(expense);
+    const result = await addExpense(newExpense);
+    if (result.error) {
+      toast({ title: "Error adding expense", description: result.error.message, variant: "destructive" });
+      return;
+    }
     setAmount("");
     setNote("");
     setCategory("Food");
     setDate(new Date());
     toast({ title: "Expense added!" });
-    if (onAdd) onAdd(expense);
+    if (onAdd && result.data) onAdd(result.data);
   };
 
   return (

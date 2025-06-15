@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { getExpenses, Expense, setExpenses } from "@/lib/expenseStorage";
+import { Expense, fetchExpenses, deleteExpense } from "@/lib/supabaseExpenses";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -12,18 +12,27 @@ const CATEGORY_OPTIONS = [
 ];
 
 export default function ExpenseList() {
-  const [expenses, setExpenseList] = useState<Expense[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [filter, setFilter] = useState<Filter>("all");
   const [sortBy, setSortBy] = useState<SortBy>("date");
+  const [loading, setLoading] = useState(false);
+
+  const loadExpenses = async () => {
+    setLoading(true);
+    const data = await fetchExpenses();
+    setExpenses(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    setExpenseList(getExpenses());
+    loadExpenses();
   }, []);
 
-  const handleDelete = (id: string) => {
-    const list = expenses.filter(e => e.id !== id);
-    setExpenseList(list);
-    setExpenses(list);
+  const handleDelete = async (id: string) => {
+    const ok = await deleteExpense(id);
+    if (ok) {
+      setExpenses(expenses => expenses.filter(e => e.id !== id));
+    }
   };
 
   const filtered = filter === "all"
@@ -55,22 +64,23 @@ export default function ExpenseList() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {sorted.length === 0
-          ? <div className="text-muted-foreground py-6 text-center">No expenses yet!</div>
-          : (
-            <ul className="divide-y">
-              {sorted.map(exp => (
-                <li key={exp.id} className="py-3 flex flex-col sm:flex-row items-start sm:items-center gap-2 flex-wrap">
-                  <span className="font-mono font-semibold text-lg">${exp.amount.toFixed(2)}</span>
-                  <span className="rounded bg-muted px-2 py-0.5 text-xs">{exp.category}</span>
-                  <span className="flex-1 text-sm break-words max-w-full">{exp.note}</span>
-                  <span className="text-xs text-muted-foreground">{new Date(exp.date).toLocaleString()}</span>
-                  <Button onClick={()=>handleDelete(exp.id)} size="sm" variant="outline" className="mt-2 sm:mt-0">Delete</Button>
-                </li>
-              ))}
-            </ul>
-          )
-        }
+        {loading ? (
+          <div className="text-muted-foreground py-6 text-center">Loading...</div>
+        ) : sorted.length === 0 ? (
+          <div className="text-muted-foreground py-6 text-center">No expenses yet!</div>
+        ) : (
+          <ul className="divide-y">
+            {sorted.map(exp => (
+              <li key={exp.id} className="py-3 flex flex-col sm:flex-row items-start sm:items-center gap-2 flex-wrap">
+                <span className="font-mono font-semibold text-lg">${exp.amount.toFixed(2)}</span>
+                <span className="rounded bg-muted px-2 py-0.5 text-xs">{exp.category}</span>
+                <span className="flex-1 text-sm break-words max-w-full">{exp.note}</span>
+                <span className="text-xs text-muted-foreground">{new Date(exp.date).toLocaleString()}</span>
+                <Button onClick={()=>handleDelete(exp.id)} size="sm" variant="outline" className="mt-2 sm:mt-0">Delete</Button>
+              </li>
+            ))}
+          </ul>
+        )}
       </CardContent>
     </Card>
   );

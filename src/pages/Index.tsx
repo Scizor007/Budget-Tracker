@@ -10,14 +10,13 @@ import { useNavigate } from "react-router-dom";
 const Index = () => {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center px-2 py-8">
-      <Card className="w-full max-w-md mb-8">
+    <div className="min-h-screen bg-background flex flex-col items-center px-2 py-4 sm:py-8">
+      <Card className="w-full max-w-md mb-8 shadow-lg">
         <CardHeader>
-          <CardTitle>Add Expense</CardTitle>
+          <CardTitle className="text-xl sm:text-2xl">Add Expense</CardTitle>
         </CardHeader>
         <CardContent>
           <ExpenseForm />
-          {/* Graphs button below Add Expense */}
           <Button
             className="w-full mt-4"
             variant="secondary"
@@ -25,7 +24,6 @@ const Index = () => {
           >
             Graphs
           </Button>
-          {/* More Features button, kept below Graphs */}
           <Button
             className="w-full mt-2"
             variant="outline"

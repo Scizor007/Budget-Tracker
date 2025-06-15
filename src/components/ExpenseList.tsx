@@ -38,17 +38,17 @@ export default function ExpenseList() {
   });
 
   return (
-    <Card className="mt-6">
+    <Card className="mt-6 shadow-md">
       <CardHeader>
-        <CardTitle className="flex flex-wrap items-center gap-2">
+        <CardTitle className="flex flex-wrap items-center gap-2 text-lg sm:text-xl">
           Expense History
-          <select className="ml-auto rounded px-2 py-1 text-sm" value={filter} onChange={e=>setFilter(e.target.value)}>
+          <select className="ml-auto rounded px-2 py-1 text-sm border bg-card z-10" value={filter} onChange={e=>setFilter(e.target.value)}>
             <option value="all">All Categories</option>
             {CATEGORY_OPTIONS.map(opt =>
               <option key={opt} value={opt}>{opt}</option>
             )}
           </select>
-          <select className="rounded px-2 py-1 text-sm" value={sortBy} onChange={e=>setSortBy(e.target.value as SortBy)}>
+          <select className="rounded px-2 py-1 text-sm border bg-card z-10" value={sortBy} onChange={e=>setSortBy(e.target.value as SortBy)}>
             <option value="date">Sort by Date</option>
             <option value="amount">Sort by Amount</option>
           </select>
@@ -60,12 +60,12 @@ export default function ExpenseList() {
           : (
             <ul className="divide-y">
               {sorted.map(exp => (
-                <li key={exp.id} className="py-3 flex items-center gap-2 flex-wrap">
+                <li key={exp.id} className="py-3 flex flex-col sm:flex-row items-start sm:items-center gap-2 flex-wrap">
                   <span className="font-mono font-semibold text-lg">${exp.amount.toFixed(2)}</span>
                   <span className="rounded bg-muted px-2 py-0.5 text-xs">{exp.category}</span>
-                  <span className="flex-1 text-sm break-words">{exp.note}</span>
+                  <span className="flex-1 text-sm break-words max-w-full">{exp.note}</span>
                   <span className="text-xs text-muted-foreground">{new Date(exp.date).toLocaleString()}</span>
-                  <Button onClick={()=>handleDelete(exp.id)} size="sm" variant="outline">Delete</Button>
+                  <Button onClick={()=>handleDelete(exp.id)} size="sm" variant="outline" className="mt-2 sm:mt-0">Delete</Button>
                 </li>
               ))}
             </ul>

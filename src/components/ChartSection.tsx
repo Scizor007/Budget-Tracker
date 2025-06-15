@@ -45,10 +45,10 @@ export default function ChartSection() {
   }, [filtered]);
 
   return (
-    <Card className="w-full max-w-2xl mt-6">
+    <Card className="w-full max-w-2xl mt-6 shadow-lg">
       <CardHeader className="flex-row flex justify-between items-center gap-2">
-        <CardTitle>Spending Analysis</CardTitle>
-        <div className="flex gap-2">
+        <CardTitle className="text-lg sm:text-xl">Spending Analysis</CardTitle>
+        <div className="flex flex-wrap gap-2 justify-end">
           {TIME_FILTERS.map(f =>
             <Button
               key={f.value}
@@ -63,21 +63,21 @@ export default function ChartSection() {
             onPressedChange={v=>setChartType(v ? "pie" : "bar")}
             aria-label="Toggle Pie/Bar"
             size="sm"
-            className="ml-2"
+            className="ml-2 min-w-[90px] text-xs"
           >
             {chartType === "bar" ? "Bar Chart" : "Pie Chart"}
           </Toggle>
         </div>
       </CardHeader>
-      <CardContent className="h-72">
+      <CardContent className="h-64 sm:h-72 pt-4">
         {data.length === 0 ? (
           <div className="text-center text-muted-foreground py-12">No expenses for this range.</div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             {chartType === "bar" ? (
               <BarChart data={data}>
-                <XAxis dataKey="category" />
-                <YAxis />
+                <XAxis dataKey="category" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Bar dataKey="total">
                   {data.map((entry, i) =>
@@ -95,7 +95,7 @@ export default function ChartSection() {
                   label={({ category, percent }) =>
                     `${category}: ${(percent * 100).toFixed(1)}%`
                   }
-                  outerRadius={90}
+                  outerRadius={80}
                   fill="#8884d8"
                   dataKey="total"
                   nameKey="category"
@@ -104,7 +104,7 @@ export default function ChartSection() {
                     <Cell key={`cell-${i}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Legend />
+                <Legend iconType="circle" />
                 <Tooltip />
               </PieChart>
             )}

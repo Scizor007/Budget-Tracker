@@ -8,10 +8,10 @@ import { useNavigate } from "react-router-dom";
 const Graphs = () => {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center px-2 py-8">
-      <Card className="w-full max-w-2xl mt-8">
+    <div className="min-h-screen bg-background flex flex-col items-center px-2 py-4 sm:py-8">
+      <Card className="w-full max-w-2xl mt-8 shadow-lg">
         <CardHeader>
-          <CardTitle>Expense Graphs</CardTitle>
+          <CardTitle className="text-xl sm:text-2xl">Expense Graphs</CardTitle>
         </CardHeader>
         <CardContent>
           <ChartSection />

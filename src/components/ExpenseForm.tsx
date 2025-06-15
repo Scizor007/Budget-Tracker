@@ -11,6 +11,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { addExpense } from "@/lib/supabaseExpenses";
+import CategoryInput from "./CategoryInput";
 
 const CATEGORY_OPTIONS = [
   "Food", "Travel", "Shopping", "Bills", "Entertainment", "Health", "Other"
@@ -68,16 +69,11 @@ export default function ExpenseForm({ onAdd }: Props) {
       </div>
       <div>
         <Label htmlFor="category">Category</Label>
-        <select
-          id="category"
-          className="w-full rounded-md border px-3 py-2 bg-background mt-1"
+        <CategoryInput
           value={category}
-          onChange={e => setCategory(e.target.value)}
-        >
-          {CATEGORY_OPTIONS.map(opt => (
-            <option key={opt} value={opt}>{opt}</option>
-          ))}
-        </select>
+          onChange={setCategory}
+          inputId="category"
+        />
       </div>
       <div>
         <Label htmlFor="note">Note</Label>

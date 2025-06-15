@@ -1,4 +1,3 @@
-
 import React from "react";
 import ExpenseForm from "@/components/ExpenseForm";
 import ExpenseList from "@/components/ExpenseList";
@@ -6,11 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ChartSection from "@/components/ChartSection";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Index = () => {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center px-2 py-4 sm:py-8">
+    <div className="min-h-screen bg-background flex flex-col items-center px-2 py-4 sm:py-8 relative">
+      <ThemeToggle />
       <Card className="w-full max-w-md mb-8 shadow-lg">
         <CardHeader>
           <CardTitle className="text-xl sm:text-2xl">Add Expense</CardTitle>

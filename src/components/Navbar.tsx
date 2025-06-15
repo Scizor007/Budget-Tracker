@@ -34,7 +34,7 @@ export default function Navbar() {
       <div className="max-w-5xl mx-auto flex items-center justify-between px-4 py-2">
         <div className="text-xl font-bold tracking-tight flex items-center space-x-2 text-primary">
           <span role="img" aria-label="logo" className="mr-1">💸</span>
-          <span>Budget Buddy Insights</span>
+          <span>Budget Tracker</span>
         </div>
         <ul className="flex items-center space-x-2">
           {navItems.map(({ path, label, icon: Icon }) => (

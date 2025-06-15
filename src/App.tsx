@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import Features from "./pages/Features";
 import Graphs from "./pages/Graphs";
 import Dashboard from "./pages/Dashboard";
+import Navbar from "@/components/Navbar";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/features" element={<Features />} />

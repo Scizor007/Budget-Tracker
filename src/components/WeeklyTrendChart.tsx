@@ -89,9 +89,19 @@ function getWeeklyLinesData(expenses: { amount: number; date: string }[]) {
 
 // Custom black dot for points
 const CustomDot = (props: DotProps) => {
-  const { cx, cy, stroke, ...rest } = props;
+  const { cx, cy, key } = props;
+  // Only forward the correct props--no spreads from DotProps
+  if (typeof cx !== "number" || typeof cy !== "number") return null;
   return (
-    <circle cx={cx} cy={cy} r={5} stroke="black" strokeWidth={2} fill="black" {...rest} />
+    <circle
+      cx={cx}
+      cy={cy}
+      r={5}
+      stroke="black"
+      strokeWidth={2}
+      fill="black"
+      key={key}
+    />
   );
 };
 

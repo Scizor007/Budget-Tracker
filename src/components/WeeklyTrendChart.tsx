@@ -20,8 +20,6 @@ import {
   addDays,
   addWeeks,
   format,
-  isWithinInterval,
-  isSameWeek
 } from "date-fns";
 
 const WEEK_COLORS = [
@@ -74,13 +72,16 @@ function getWeeklyLinesData(expenses: { amount: number; date: string }[]) {
     weekStart = addWeeks(weekStart, 1);
   }
 
-  // Build an array for recharts: [{ day: "Mon", week1: X, week2: Y, ... }, ...]
-  const chartData = dayKeys.map((day) => {
-    const entry: { day: string; [weekName: string]: number } = { day };
+  // Define proper type for recharts: each entry has day as string, other fields as numbers
+  type ChartEntry = { day: string } & { [weekName: string]: number };
+
+  const chartData: ChartEntry[] = dayKeys.map((day) => {
+    // Build entry object for each day of the week
+    const entry: any = { day };
     weekLabels.forEach((w) => {
       entry[w] = weekLines[w][day];
     });
-    return entry;
+    return entry as ChartEntry;
   });
 
   return { chartData, weekLabels };
@@ -88,9 +89,9 @@ function getWeeklyLinesData(expenses: { amount: number; date: string }[]) {
 
 // Custom black dot for points
 const CustomDot = (props: DotProps) => {
-  const { cx, cy } = props;
+  const { cx, cy, stroke, ...rest } = props;
   return (
-    <circle cx={cx} cy={cy} r={5} stroke="black" strokeWidth={2} fill="black" />
+    <circle cx={cx} cy={cy} r={5} stroke="black" strokeWidth={2} fill="black" {...rest} />
   );
 };
 
@@ -158,4 +159,3 @@ export default function WeeklyTrendChart() {
     </Card>
   );
 }
-

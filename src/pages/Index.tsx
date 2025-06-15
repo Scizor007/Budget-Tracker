@@ -1,8 +1,8 @@
-
 import React, { useState } from "react";
 import ExpenseForm from "@/components/ExpenseForm";
 import ExpenseList from "@/components/ExpenseList";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ChartSection from "@/components/ChartSection";
 
 const Index = () => {
   return (
@@ -15,6 +15,7 @@ const Index = () => {
           <ExpenseForm />
         </CardContent>
       </Card>
+      <ChartSection />
       <div className="w-full max-w-2xl">
         <ExpenseList />
       </div>

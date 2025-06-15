@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,10 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { v4 as uuidv4 } from "uuid";
 import { saveExpense, Expense } from "@/lib/expenseStorage";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const CATEGORY_OPTIONS = [
   "Food", "Travel", "Shopping", "Bills", "Entertainment", "Health", "Other"
@@ -20,6 +23,7 @@ export default function ExpenseForm({ onAdd }: Props) {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Food");
   const [note, setNote] = useState("");
+  const [date, setDate] = useState<Date>(new Date());
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,12 +37,13 @@ export default function ExpenseForm({ onAdd }: Props) {
       amount: amt,
       category,
       note,
-      date: new Date().toISOString(),
+      date: date.toISOString(),
     };
     saveExpense(expense);
     setAmount("");
     setNote("");
     setCategory("Food");
+    setDate(new Date());
     toast({ title: "Expense added!" });
     if (onAdd) onAdd(expense);
   };
@@ -78,6 +83,29 @@ export default function ExpenseForm({ onAdd }: Props) {
           placeholder="e.g. Lunch at KFC"
           rows={2}
         />
+      </div>
+      <div>
+        <Label htmlFor="date">Date</Label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className="w-full justify-start text-left font-normal"
+            >
+              <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
+              {date ? format(date, "PPP") : <span>Pick a date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={v=>v && setDate(v)}
+              initialFocus
+              className="p-3 pointer-events-auto"
+            />
+          </PopoverContent>
+        </Popover>
       </div>
       <Button type="submit" className="w-full">Add Expense</Button>
     </form>

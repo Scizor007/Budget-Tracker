@@ -1,3 +1,4 @@
+
 import React from "react";
 import ExpenseForm from "@/components/ExpenseForm";
 import ExpenseList from "@/components/ExpenseList";
@@ -16,10 +17,18 @@ const Index = () => {
         </CardHeader>
         <CardContent>
           <ExpenseForm />
-          {/* Add Features button */}
+          {/* Graphs button below Add Expense */}
           <Button
             className="w-full mt-4"
             variant="secondary"
+            onClick={() => navigate("/graphs")}
+          >
+            Graphs
+          </Button>
+          {/* More Features button, kept below Graphs */}
+          <Button
+            className="w-full mt-2"
+            variant="outline"
             onClick={() => navigate("/features")}
           >
             More Features

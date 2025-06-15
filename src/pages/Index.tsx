@@ -1,11 +1,22 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from "react";
+import ExpenseForm from "@/components/ExpenseForm";
+import ExpenseList from "@/components/ExpenseList";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-background flex flex-col items-center px-2 py-8">
+      <Card className="w-full max-w-md mb-8">
+        <CardHeader>
+          <CardTitle>Add Expense</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ExpenseForm />
+        </CardContent>
+      </Card>
+      <div className="w-full max-w-2xl">
+        <ExpenseList />
       </div>
     </div>
   );

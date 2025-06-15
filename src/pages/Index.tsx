@@ -32,6 +32,13 @@ const Index = () => {
           >
             More Features
           </Button>
+          <Button
+            className="w-full mt-2"
+            variant="outline"
+            onClick={() => navigate("/dashboard")}
+          >
+            Dashboard
+          </Button>
         </CardContent>
       </Card>
       <ChartSection />

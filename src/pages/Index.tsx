@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import ExpenseForm from "@/components/ExpenseForm";
 import ExpenseList from "@/components/ExpenseList";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ChartSection from "@/components/ChartSection";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background flex flex-col items-center px-2 py-8">
       <Card className="w-full max-w-md mb-8">
@@ -13,6 +16,14 @@ const Index = () => {
         </CardHeader>
         <CardContent>
           <ExpenseForm />
+          {/* Add Features button */}
+          <Button
+            className="w-full mt-4"
+            variant="secondary"
+            onClick={() => navigate("/features")}
+          >
+            More Features
+          </Button>
         </CardContent>
       </Card>
       <ChartSection />

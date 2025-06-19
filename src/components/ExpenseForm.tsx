@@ -54,7 +54,7 @@ export default function ExpenseForm({ onAdd }: Props) {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
+    <form className="space-y-4 animate-fadeInUp" onSubmit={handleSubmit}>
       <div>
         <Label htmlFor="amount">Amount</Label>
         <Input
@@ -92,7 +92,7 @@ export default function ExpenseForm({ onAdd }: Props) {
           <PopoverTrigger asChild>
             <Button
               variant={"outline"}
-              className="w-full justify-start text-left font-normal mt-1"
+              className="w-full justify-start text-left font-normal mt-1 button-modern animate-pop"
             >
               <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
               {date ? format(date, "PPP") : <span>Pick a date</span>}
@@ -109,7 +109,7 @@ export default function ExpenseForm({ onAdd }: Props) {
           </PopoverContent>
         </Popover>
       </div>
-      <Button type="submit" className="w-full mt-2 text-base py-3">Add Expense</Button>
+      <Button type="submit" className="w-full mt-2 text-base py-3 button-modern animate-pop">Add Expense</Button>
     </form>
   );
 }

@@ -2,6 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Animated background gradient for the whole app */
+body {
+  @apply bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 min-h-screen;
+  animation: gradientBG 12s ease-in-out infinite alternate;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Card entrance animation */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Button pop animation */
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-pop:active {
+  animation: pop 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Modern card style */
+.card-modern {
+  @apply rounded-2xl shadow-2xl border-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900;
+  animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Modern button style */
+.button-modern {
+  @apply rounded-full px-6 py-2 font-semibold shadow-lg bg-gradient-to-r from-sky-500 via-blue-700 to-blue-900 text-white transition-transform duration-200;
+}
+.button-modern:hover {
+  @apply scale-105 shadow-xl;
+}
+.button-modern:active {
+  @apply scale-95;
+}
+
+/* Input focus animation */
+input:focus, textarea:focus, select:focus {
+  @apply ring-2 ring-pink-400 ring-opacity-60 transition-all duration-200;
+}
+
+/* Section fade-in */
+.section-fade {
+  animation: fadeInUp 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
 
 @layer base {
@@ -90,9 +165,7 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }

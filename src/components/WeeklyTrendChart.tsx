@@ -20,6 +20,7 @@ import {
   addWeeks,
   format,
 } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
 
 const WEEK_COLORS = [
   "#6366F1",
@@ -112,7 +113,13 @@ export default function WeeklyTrendChart() {
   useEffect(() => {
     const loadExpenses = async () => {
       setLoading(true);
-      const data = await fetchExpenses();
+      const user = (await supabase.auth.getUser()).data.user;
+      if (!user) {
+        setExpenses([]);
+        setLoading(false);
+        return;
+      }
+      const data = await fetchExpenses(user.id);
       setExpenses(data);
       setLoading(false);
     };

@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 export type Expense = {
@@ -7,12 +6,14 @@ export type Expense = {
   category: string;
   note: string;
   date: string; // ISO date string
+  user_id: string;
 };
 
-export async function fetchExpenses(): Promise<Expense[]> {
+export async function fetchExpenses(userId: string): Promise<Expense[]> {
   const { data, error } = await supabase
     .from("expenses")
     .select("*")
+    .eq("user_id", userId)
     .order("date", { ascending: false });
   if (error) {
     console.error("Error fetching expenses:", error);

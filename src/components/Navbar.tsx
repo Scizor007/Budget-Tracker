@@ -1,8 +1,10 @@
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Home, BarChart2, LayoutDashboard, Star } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { signInWithGoogle } from "@/lib/supabaseAuth";
 
 const navItems = [
   {
@@ -29,6 +31,24 @@ const navItems = [
 
 export default function Navbar() {
   const location = useLocation();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data?.user || null);
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
   return (
     <nav className="w-full bg-background/80 backdrop-blur border-b sticky top-0 z-40">
       <div className="max-w-5xl mx-auto flex items-center justify-between px-4 py-2">
@@ -55,6 +75,27 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+        <div className="ml-4 flex items-center space-x-2">
+          {user ? (
+            <>
+              <span className="text-sm font-medium text-primary">
+                {user.user_metadata?.name || user.email}
+              </span>
+              <Button variant="outline" size="sm" onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Button
+              className="button-modern animate-pop"
+              variant="outline"
+              size="sm"
+              onClick={signInWithGoogle}
+            >
+              Sign in with Google
+            </Button>
+          )}
+        </div>
       </div>
     </nav>
   );

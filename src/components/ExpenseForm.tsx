@@ -11,6 +11,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { addExpense } from "@/lib/supabaseExpenses";
+import { supabase } from "@/integrations/supabase/client";
 import CategoryInput from "./CategoryInput";
 
 const CATEGORY_OPTIONS = [
@@ -34,11 +35,17 @@ export default function ExpenseForm({ onAdd }: Props) {
       toast({ title: "Please enter a valid amount", variant: "destructive" });
       return;
     }
+    const user = (await supabase.auth.getUser()).data.user;
+    if (!user) {
+      toast({ title: "You must be logged in to add expenses", variant: "destructive" });
+      return;
+    }
     const newExpense = {
       amount: amt,
       category,
       note,
       date: date.toISOString(),
+      user_id: user.id,
     };
     const result = await addExpense(newExpense);
     if (result.error) {

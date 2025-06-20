@@ -5,6 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pi
 import { Toggle } from "@/components/ui/toggle";
 import { Button } from "@/components/ui/button";
 import { format, isSameDay, isThisWeek, isThisMonth } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
 
 const COLORS = [
   "#6366F1", "#F59E42", "#EF4444", "#10B981", "#FBBF24", "#7C3AED", "#3B82F6"
@@ -30,7 +31,13 @@ export default function ChartSection() {
     const loadExpenses = async () => {
       setLoading(true);
       try {
-        const data = await fetchExpenses();
+        const user = (await supabase.auth.getUser()).data.user;
+        if (!user) {
+          setExpenses([]);
+          setLoading(false);
+          return;
+        }
+        const data = await fetchExpenses(user.id);
         console.log("Fetched expenses from Supabase:", data);
         setExpenses(data);
       } catch (error) {

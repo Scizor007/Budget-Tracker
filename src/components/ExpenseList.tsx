@@ -3,6 +3,7 @@ import { Expense, fetchExpenses, deleteExpense } from "@/lib/supabaseExpenses";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Utensils, Car, ShoppingBag, CreditCard, Film, HeartPulse, MoreHorizontal } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 type Filter = "all" | string;
 type SortBy = "date" | "amount";
@@ -29,7 +30,13 @@ export default function ExpenseList() {
 
   const loadExpenses = async () => {
     setLoading(true);
-    const data = await fetchExpenses();
+    const user = (await supabase.auth.getUser()).data.user;
+    if (!user) {
+      setExpenses([]);
+      setLoading(false);
+      return;
+    }
+    const data = await fetchExpenses(user.id);
     setExpenses(data);
     setLoading(false);
   };
